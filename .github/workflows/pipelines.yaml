@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - staging
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -38,18 +38,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      
       - name: Deploy to Staging
-        run: echo "Deploying to Staging"# Aqui, insira os comandos reais para deployment em staging.
+        run: echo "Deploying to Staging" # Aqui, insira os comandos reais para deployment em staging.
 
-  deploy-production:
-    needs: build
+  merge-to-main:
+    needs: deploy-staging
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/staging'
 
-    steps:
+    steps:      
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to Production
-        run: echo "Deploying to Production"# Aqui, insira os comandos reais para deployment em produção.
+      - name: Merge to Main
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout main
+          git merge staging --no-ff
+          git push origin main
