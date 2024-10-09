@@ -39,7 +39,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Deploy to Staging
-        run: echo "Deploying to Staging" # Aqui, insira os comandos reais para deployment em staging.
+        run: echo "Deploying to Staging"
 
   merge-to-main:
     needs: deploy-staging
@@ -49,6 +49,9 @@ jobs:
     steps:      
       - name: Checkout code
         uses: actions/checkout@v2
+
+      - name: Fetch all branches
+        uses: git fetch --all
 
       - name: Merge to Main
         run: |
