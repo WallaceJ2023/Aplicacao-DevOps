@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - staging
-
+      
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -13,14 +13,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
 
       - name: Set up JDK 22
         uses: actions/setup-java@v2
         with:
-          distribution: "adopt"
-          java-version: "22"
+          distribution: 'adopt'
+          java-version: '22'
 
       - name: Build with Maven
         run: mvn clean install
@@ -32,40 +30,26 @@ jobs:
         run: mvn package
 
   deploy-staging:
-      needs: build
-      runs-on: ubuntu-latest
-      if: github.ref == 'refs/heads/staging'
+    needs: build
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/staging'
 
-      steps:
-        - name: Checkout code
-          uses: actions/checkout@v2
-          with:
-            fetch-depth: 0 # Baixar todas as branches
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-        - name: Deploy to Staging
-          run: echo "Deploying to Staging"# Comandos reais para deployment em staging.
-
-        - name: Force Merge staging into main
-          run: |
-            git config --global user.name "github-actions"
-            git config --global user.email "github-actions@github.com"
-            git checkout main
-            git merge staging --strategy-option theirs
-            git push origin main
-          env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Deploy to Staging
+        run: echo "Deploying to Staging"# Aqui, insira os comandos reais para deployment em staging.
 
   deploy-production:
-    needs: deploy-staging
+    needs: build
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main'
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 
 
       - name: Deploy to Production
-        run: echo "Deploying to Production"
-        
+        run: echo "Deploying to Production"# Aqui, insira os comandos reais para deployment em produção.
