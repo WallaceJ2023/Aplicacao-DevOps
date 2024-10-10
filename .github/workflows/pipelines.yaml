@@ -13,6 +13,8 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Baixar todas as branches
 
       - name: Set up JDK 22
         uses: actions/setup-java@v2
@@ -37,10 +39,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Baixar todas as branches
 
       - name: Deploy to Staging
         run: echo "Deploying to Staging"
-        # Aqui, insira os comandos reais para deployment em staging.
+        # Comandos reais para deployment em staging.
 
       - name: Merge staging into main
         run: |
@@ -58,7 +62,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Baixar todas as branches
 
       - name: Deploy to Production
         run: echo "Deploying to Production"
-        # Aqui, insira os comandos reais para deployment em produção.
+        # Comandos reais para deployment em produção.
