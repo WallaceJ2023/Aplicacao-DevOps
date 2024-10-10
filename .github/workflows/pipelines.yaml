@@ -53,6 +53,8 @@ jobs:
           git checkout main
           git merge staging
           git push origin main
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   deploy-production:
     needs: deploy-staging
