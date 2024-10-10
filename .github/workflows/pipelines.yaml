@@ -45,7 +45,7 @@ jobs:
         - name: Deploy to Staging
           run: echo "Deploying to Staging"# Comandos reais para deployment em staging.
 
-        - name: Merge staging into main
+        - name: Force Merge staging into main
           run: |
             git config --global user.name "github-actions"
             git config --global user.email "github-actions@github.com"
