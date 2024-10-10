@@ -5,7 +5,7 @@ on:
     branches:
       - main
       - staging
-      
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -17,8 +17,8 @@ jobs:
       - name: Set up JDK 22
         uses: actions/setup-java@v2
         with:
-          distribution: 'adopt'
-          java-version: '22'
+          distribution: "adopt"
+          java-version: "22"
 
       - name: Build with Maven
         run: mvn clean install
@@ -38,7 +38,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      
       - name: Deploy to Staging
         run: echo "Deploying to Staging"# Aqui, insira os comandos reais para deployment em staging.
 
@@ -51,5 +50,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Deploy to Production
-        run: echo "Deploying to Production"# Aqui, insira os comandos reais para deployment em produção.
+      - name: Deploy to Staging
+        run: |
+          az webapp deployment source config-zip --resource-group myResourceGroup --name myApp --src ./myapp.zip
