@@ -1,72 +1,22 @@
 name: CI/CD Pipeline
 
 on:
-  push:
+  pull_request:
     branches:
       - main
-      - staging
 
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Baixar todas as branches
+      - name: Git Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up JDK 22
-        uses: actions/setup-java@v2
+      - name: Setup java SDK
+        uses: actions/setup-java@v4
         with:
-          distribution: "adopt"
+          distribution: "temurin"
           java-version: "22"
 
-      - name: Build with Maven
-        run: mvn clean install
-
-      - name: Run tests
+      - name: Unit tests
         run: mvn test
-
-      - name: Package application
-        run: mvn package
-
-  deploy-staging:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/staging'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Baixar todas as branches
-
-      - name: Deploy to Staging
-        run: echo "Deploying to Staging"
-        # Comandos reais para deployment em staging.
-
-      - name: Merge staging into main
-        run: |
-          git config --global user.name "github-actions"
-          git config --global user.email "github-actions@github.com"
-          git checkout main
-          git merge staging
-          git push origin main
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
-  deploy-production:
-    needs: deploy-staging
-    runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0 # Baixar todas as branches
-
-      - name: Deploy to Production
-        run: echo "Deploying to Production"
-        # Comandos reais para deployment em produção.
